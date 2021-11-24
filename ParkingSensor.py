@@ -21,7 +21,7 @@ def check_for_car():
                 while True:
                         # Send a short ultrasound pulse
                    GPIO.output(TRIG, True)
-                   print('start')
+                   #print('start')
                    time.sleep(0.00001)
                    GPIO.output(TRIG, False)
 
@@ -51,4 +51,8 @@ def check_for_car():
 
 #occupied = check_for_car()
 #print(occupied)
+
+
+
+
 
