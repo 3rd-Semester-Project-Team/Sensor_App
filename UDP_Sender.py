@@ -8,15 +8,21 @@ oldStatus = False
 
 def send_udp_package(sensorId, occupied):
         clientSocket = socket(AF_INET, SOCK_DGRAM)
-        message = "{{'sensorId':1,'occupied':{}}}".format(occupied)
-        clientSocket.sendto(message.encode(),(serverName, serverPort))
+        clientSocket.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
+        message = '{{"sensorId":1,"occupied":{}}}'.format(occupied)
+        clientSocket.sendto(message.encode(),('<broadcast>', serverPort))
         clientSocket.close
 
 while True:
     newStatus = ParkingSensor.check_for_car()
     #print(newStatus)
+    message = "false"
     if newStatus != oldStatus:
-        send_udp_package(1, newStatus)
+        if newStatus:
+			message = "true"
+        else:
+			message = "false"
+        send_udp_package(1, message)
         oldStatus = newStatus
         continue
     #print('sleeping')
